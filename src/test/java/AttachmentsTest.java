@@ -2,21 +2,24 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
+
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
+import static io.qameta.allure.Allure.attachment;
 import static io.qameta.allure.Allure.step;
 import static org.openqa.selenium.By.linkText;
 
-public class StepsTest {
+public class AttachmentsTest {
 
     private static final String REPOSITORY = "eroshenkoam/allure-example\"";
 
     @Test
-    public void testLambdaStep() {
+    public void testLambdaAttachments() {
         SelenideLogger.addListener("allure", new AllureSelenide());
          step("Открываем главную страницу", () -> {
         open("https://github.com/");
+        attachment("Source", Objects.requireNonNull(webdriver().driver().source()));
          });
          step("Ищем репозиторий " + REPOSITORY, () -> {
              $("[data-target='qbsearch-input.inputButton']").click();
@@ -34,7 +37,7 @@ public class StepsTest {
     }
 
     @Test
-    public void testAnnotatedStep() {
+    public void testAnnotatedAttachments() {
         WebSteps steps = new WebSteps();
         steps.openMainpage();
         steps.searchForRepository(REPOSITORY);
